@@ -80,20 +80,22 @@ public class HangmanV4 {
     }
 
     public static void main(String[] args) {
+        int TOTALCHANCES=10;
         HangmanV4 hangmanV4=new HangmanV4();
-        hangmanV4.randomPhrase("words.txt");
+        GuessBot guessBot=new GuessBot();
+        hangmanV4.randomPhrase("phrases.txt");
 //        System.out.println(hangmanV4.phrase);
         String lowPhrase=hangmanV4.makeLow();
 //        System.out.println(lowPhrase);
         hangmanV4.generateHiddenPhrase();
         System.out.println(hangmanV4.hiddenPhrase);
         int misses;
-        int TOTALCHANCES=5;
         int chancesLeft=TOTALCHANCES;
-        Scanner scanner;
-        scanner=new Scanner(System.in);
+//        Scanner scanner;
+//        scanner=new Scanner(System.in);
         while(chancesLeft>0){
-            char guess=hangmanV4.playerGuess(scanner);
+//            char guess=hangmanV4.playerGuess(scanner);
+            char guess=guessBot.guessOneChar();
             char lowGuess=Character.toLowerCase(guess);
             if(!Character.isLetter(guess)){
                 System.out.println("You don't input a letter");
