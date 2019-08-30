@@ -13,6 +13,7 @@ public class HangmanV3 {
     ArrayList<Character> preMisses=new ArrayList<>();
     ArrayList<Character> preCorrect=new ArrayList<>();
 
+    //get a random Phrase
     String randomPhrase(String filename){
         List<String> phraseList=null;
         try{
@@ -26,6 +27,7 @@ public class HangmanV3 {
         return this.phrase;
     }
 
+    //return initial hiddenPhrase
     StringBuilder generateHiddenPhrase(){
         for(int j=0;j<this.phrase.length();j++){
             if(Character.isLetter(this.phrase.charAt(j))==true){
@@ -37,6 +39,7 @@ public class HangmanV3 {
         return hiddenPhrase;
     }
 
+    //get player's input
     char playerGuess(Scanner scanner){
         // ask player to only input one letter
         String str1="";
@@ -48,6 +51,7 @@ public class HangmanV3 {
         return guess;
     }
 
+    //returns whether a letter matches and modifies the partially hidden phrase, and modifies the hidden phrase if there is a match.
     boolean processGuess(String lowPhrase, char lowGuess){
         this.previousGuesses.add(lowGuess);
         if(lowPhrase.indexOf(lowGuess)!=-1){
@@ -66,7 +70,7 @@ public class HangmanV3 {
         }
     }
 
-
+    //make every letter in phrase to lower case
     String makeLow(){
         String lowPhrase="";
         for(int i=0;i<this.phrase.length();i++){

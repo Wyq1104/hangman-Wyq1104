@@ -89,6 +89,8 @@ public class HangmanV4 {
 //        System.out.println(lowPhrase);
         hangmanV4.generateHiddenPhrase();
         System.out.println(hangmanV4.hiddenPhrase);
+        ArrayList botRead=guessBot.readPhrase(hangmanV4.hiddenPhrase);
+        System.out.println(botRead);
         int misses;
         int chancesLeft=TOTALCHANCES;
 //        Scanner scanner;

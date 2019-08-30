@@ -7,7 +7,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class HangmanV2 {
-    //get a random String
+    //get a random Phrase
     String randomPhrase(String filename){
         List<String> phraseList=null;
         try{
@@ -19,15 +19,6 @@ public class HangmanV2 {
         int i1=random.nextInt(phraseList.size());
         String  phrase=phraseList.get(i1);
         return phrase;
-    }
-
-    //make every letter in phrase to lower case
-    String makeLow(String phrase){
-        String lowPhrase="";
-        for(int i=0;i<phrase.length();i++){
-            lowPhrase+=Character.toLowerCase(phrase.charAt(i));
-        }
-        return lowPhrase;
     }
 
     //return initial hiddenPhrase
@@ -43,18 +34,8 @@ public class HangmanV2 {
         return hiddenCode;
     }
 
-    //count the number of letter in the phrase
-    int getTotalLetters(String phrase){
-        int totalLetters=0;
-        for(int j=0;j<phrase.length();j++) {
-            if (Character.isLetter(phrase.charAt(j)) == true) {
-                totalLetters++;
-            }
-        }
-        return totalLetters;
-    }
+    //get player's input
 
-    //get the char player input
     char playerGuess(Scanner scanner){
         // ask player to only input one letter
         String str1="";
@@ -66,29 +47,58 @@ public class HangmanV2 {
         return guess;
     }
 
-    //modify hiddenPhrase
-    boolean processGuess(StringBuilder hiddenCode, String lowPhrase, char lowGuess, String phrase){
+    //    returns whether a letter matches and modifies the partially hidden phrase, and modifies the hidden phrase if there is a match.
+    boolean processGuess(StringBuilder hiddenCode, String lowPhrase, char lowGuess, String phrase,
+                         ArrayList<Character> preCorrect, ArrayList<Character> preMissed,
+                         ArrayList<Character> preGuesses){
+        preGuesses.add(lowGuess);
         if(lowPhrase.indexOf(lowGuess)!=-1){
+            System.out.println("Yes, you are right.");
+            preCorrect.add(lowGuess);
             for(int i=0;i<lowPhrase.length();i++){
                 if(lowGuess==lowPhrase.charAt(i)){
                     hiddenCode.setCharAt(i,phrase.charAt(i));
                 }
             }
             return true;
+        }else{
+            preMissed.add(lowGuess);
+            System.out.println("Sorry, you missed");
+            return false;
         }
-        return false;
+
     }
 
     //modify list of wrong and correct letter
-    void modifyLetterLists(ArrayList<Character> preMissed, ArrayList<Character> preCorrect, String lowPhrase,
-                           char lowGuess){
-        if(lowPhrase.indexOf(lowGuess)==-1){
-            preMissed.add(lowGuess);
-            System.out.println("Sorry, you missed");
-        }else{
-            preCorrect.add(lowGuess);
+//    void modifyLetterLists(ArrayList<Character> preMissed, ArrayList<Character> preCorrect, String lowPhrase,
+//                           char lowGuess){
+//        if(lowPhrase.indexOf(lowGuess)==-1){
+//            preMissed.add(lowGuess);
+//            System.out.println("Sorry, you missed");
+//        }else{
+//            preCorrect.add(lowGuess);
+//        }
+//    }
+
+    //make every letter in phrase to lower case
+    String makeLow(String phrase){
+        String lowPhrase="";
+        for(int i=0;i<phrase.length();i++){
+            lowPhrase+=Character.toLowerCase(phrase.charAt(i));
         }
+        return lowPhrase;
     }
+
+    //count the number of letter in the phrase
+//    int getTotalLetters(String phrase){
+//        int totalLetters=0;
+//        for(int j=0;j<phrase.length();j++) {
+//            if (Character.isLetter(phrase.charAt(j)) == true) {
+//                totalLetters++;
+//            }
+//        }
+//        return totalLetters;
+//    }
 
     public static void main(String[] args) {
         HangmanV2 hangmanV2=new HangmanV2();
@@ -98,16 +108,18 @@ public class HangmanV2 {
 //        System.out.println(lowPhrase);
         StringBuilder hiddenCode=hangmanV2.generateHiddenPhrase(phrase);
         System.out.println(hiddenCode);
-        int totalLetters=hangmanV2.getTotalLetters(phrase);
+//        int totalLetters=hangmanV2.getTotalLetters(phrase);
 //        System.out.println(totalLetters);
-        int correctLetters=0;
-        int misses=0;
+//        int correctLetters=0;
+        int misses;
         int TOTALCHANCES=5;
         int chancesLeft=TOTALCHANCES;
         Scanner scanner;
         scanner=new Scanner(System.in);
         ArrayList<Character> preMissed= new ArrayList<>();
         ArrayList<Character> preCorrect=new ArrayList<>();
+        ArrayList<Character> preGuesses=new ArrayList<>();
+
         while (chancesLeft>0){
             char guess=hangmanV2.playerGuess(scanner);
             char lowGuess=Character.toLowerCase(guess);
@@ -124,13 +136,14 @@ public class HangmanV2 {
                 System.out.println("Please do not enter the correct letter repeatedly!!!");
                 continue;
             }
-            hangmanV2.processGuess(hiddenCode,lowPhrase,lowGuess,phrase);
-            hangmanV2.modifyLetterLists(preMissed,preCorrect,lowPhrase,lowGuess);
+            hangmanV2.processGuess(hiddenCode,lowPhrase,lowGuess,phrase,preCorrect,preMissed,preGuesses);
+//            hangmanV2.modifyLetterLists(preMissed,preCorrect,lowPhrase,lowGuess);
             misses=preMissed.size();
             chancesLeft=TOTALCHANCES-misses;
             System.out.println("Misses: "+misses);
             System.out.println("Incorrect letters: "+preMissed);
             System.out.println("Chances left: "+chancesLeft);
+            System.out.println("previous guesses"+preGuesses);
             System.out.println(hiddenCode);
             if(hiddenCode.indexOf("*")==-1){
                 break;
@@ -138,7 +151,7 @@ public class HangmanV2 {
         }
         if(chancesLeft==0){
             System.out.println("Sorry, You lose!!!");
-            System.out.println("The correct answer is "+phrase);
+            System.out.println("The correct answer is: "+phrase);
         }else{
             System.out.println("Congratulation, you win!!!");
         }
