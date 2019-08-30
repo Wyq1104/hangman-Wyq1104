@@ -97,7 +97,8 @@ public class HangmanV4 {
 //        scanner=new Scanner(System.in);
         while(chancesLeft>0){
 //            char guess=hangmanV4.playerGuess(scanner);
-            char guess=guessBot.guessOneChar();
+            guessBot.readPhrase(hangmanV4.hiddenPhrase);
+            char guess=guessBot.meditation(hangmanV4.preMisses,hangmanV4.preCorrect,hangmanV4.previousGuesses);
             char lowGuess=Character.toLowerCase(guess);
             if(!Character.isLetter(guess)){
                 System.out.println("You don't input a letter");

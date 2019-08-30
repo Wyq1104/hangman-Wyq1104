@@ -3,7 +3,7 @@ import java.util.ArrayList;
 public class GuessBot {
 //    String alphabets="abcedfghijklmnopqrstuvwxyz";
     //sort by possibilities
-    String alphabets="esiarntolcdupmghbyfvkwzxqj";
+    StringBuilder alphabets=new StringBuilder("esiarntolcdupmghbyfvkwzxqj");
     ArrayList<String> hiddenWords=new ArrayList<>();
     int guessTimes=0;
     ArrayList<String> readPhrase(StringBuilder hiddenPhrase){
@@ -24,12 +24,29 @@ public class GuessBot {
         }
         return hiddenWords;
     }
-    void meditation(){
+    char meditation(ArrayList<Character> preMisses, ArrayList<Character> preCorrect, ArrayList<Character> previousGuesses){
         for(String hiddenword: this.hiddenWords){
-            if(hiddenword.length()==1){
-                this.alphabets="aietonshrdlcumnwfgypbvkjxqz";
+            //Guess one-character word
+            if(hiddenword.length()==1&&hiddenword.charAt(0)=='*'){
+                if(!previousGuesses.contains('a')){
+                    alphabets.deleteCharAt(alphabets.indexOf("a"));
+                    return 'a';
+                }else{
+                    alphabets.deleteCharAt(alphabets.indexOf("i"));
+                    return 'i';
+                }
             }
+            //Guess two-character word
+//            if(hiddenword.length()==2&&hiddenword.charAt(0)=='*'&&hiddenword.charAt(1)=='*'){
+//                if(previousGuesses.isEmpty()){
+//                    return 'a';
+//                }else if(previousGuesses==new ArrayList<Character>('a')){
+//                    return 'o';
+//                }else if(previousGuesses==)
+//            }
         }
+
+        return this.guessOneChar();
     }
     char guessOneChar(){
          char guess=this.alphabets.charAt(guessTimes);

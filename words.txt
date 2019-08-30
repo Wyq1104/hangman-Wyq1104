@@ -1,5 +1,5 @@
-alphabet
-island
-california
-minnesota
-oklahoma
+Alphabet
+Island
+California
+Minnesota
+Oklahoma
